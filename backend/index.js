@@ -10,6 +10,7 @@ app.use(express.json());
 
 // Définition des routes utilisateur
 app.use('/api/users', userRoutes);
+app.use('/api/apartments', apartmentRoutes);
 
 // Exemple de route simple pour tester que le serveur fonctionne
 app.get('/route', async (req, res) => {
@@ -22,9 +23,7 @@ app.get('/route', async (req, res) => {
     }
 });
 
-// Middleware d'erreur global devrait être placé après la définition de toutes les routes
-// Ce middleware n'est pas correctement formaté pour capturer des erreurs
-// Il faut quatre arguments, y compris 'next', pour un middleware d'erreur
+
 app.use((error, req, res, next) => {
     console.error(error);
     res.status(500).json({ error: "Erreur interne du serveur" });
