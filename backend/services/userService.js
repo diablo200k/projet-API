@@ -1,5 +1,7 @@
 // Importations nécessaires
 const User = require('../models/User');
+const Apartment = require('../models/Apartment');
+
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
@@ -56,15 +58,33 @@ exports.updateUser = async (user_id, userData) => {
         throw new Error(error.message || 'Erreur lors de la mise à jour de l\'utilisateur');
     }
 };
-
-// Fonction pour supprimer un utilisateur par son ID
 exports.deleteUser = async (userId) => {
     try {
-        // Supprimez l'utilisateur avec l'ID spécifié
-        const deletedUser = await User.destroy({ where: { user_id: userId } });
-        return deletedUser;
+        // Supprimer toutes les réservations de l'utilisateur
+        await Reservation.destroy({
+            where: {
+                client_id: userId
+            }
+        });
+
+        // Supprimer tous les appartements appartenant à l'utilisateur
+        await Apartment.destroy({
+            where: {
+                owner_id: userId
+            }
+        });
+
+        // Une fois les réservations et les appartements supprimés, vous pouvez supprimer l'utilisateur
+        await User.destroy({
+            where: {
+                user_id: userId
+            }
+        });
+
+        console.log('Utilisateur supprimé avec succès');
+        return true;
     } catch (error) {
-        console.error(error);
+        console.error('Erreur lors de la suppression de l\'utilisateur:', error);
         throw new Error('Erreur lors de la suppression de l\'utilisateur');
     }
 };
