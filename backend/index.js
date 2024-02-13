@@ -1,7 +1,7 @@
 const express = require('express');
 const sequelize = require('./bdd/database'); // Assurez-vous que le chemin est correct
 const userRoutes = require('./routes/userRoutes');
-
+const apartmentRoutes = require('./routes/apartmentRoutes');
 const app = express();
 
 // Placez app.use(express.json()); ici pour s'assurer que le middleware de parsing JSON est appliqué

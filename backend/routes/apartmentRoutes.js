@@ -2,10 +2,19 @@ const express = require('express');
 const router = express.Router();
 const apartmentController = require('../controllers/apartmentController');
 
-// Routes pour la gestion des appartements
+// GET all apartments
 router.get('/', apartmentController.getAllApartments);
+
+// GET single apartment by ID
+router.get('/:apartmentId', apartmentController.getApartmentById);
+
+// POST create new apartment
 router.post('/', apartmentController.createApartment);
-router.put('/:apartment_id', apartmentController.updateApartment);
-router.delete('/:apartment_id', apartmentController.deleteApartment);
+
+// PUT update apartment by ID
+router.put('/:apartmentId', apartmentController.updateApartment);
+
+// DELETE apartment by ID
+router.delete('/:apartmentId', apartmentController.deleteApartment);
 
 module.exports = router;
