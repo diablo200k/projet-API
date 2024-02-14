@@ -1,7 +1,11 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../bdd/database');
+const User = require('./User'); // Assurez-vous que le chemin est correct
+const Apartment = require('./Apartment'); // Assurez-vous que le chemin est correct
 
-const Reservation = sequelize.define('Reservation', {
+class Reservation extends Model {}
+
+Reservation.init({
     reservation_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -19,7 +23,7 @@ const Reservation = sequelize.define('Reservation', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'User',
+            model: User, // Utilisez le modèle User importé
             key: 'user_id'
         }
     },
@@ -27,7 +31,7 @@ const Reservation = sequelize.define('Reservation', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Apartment',
+            model: Apartment, // Utilisez le modèle Apartment importé
             key: 'apartment_id'
         }
     },
@@ -35,6 +39,11 @@ const Reservation = sequelize.define('Reservation', {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
     }
+}, {
+    sequelize,
+    modelName: 'Reservation',
+    tableName: 'Reservations',
+    timestamps: false
 });
 
 module.exports = Reservation;

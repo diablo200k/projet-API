@@ -1,5 +1,6 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../bdd/database');
+const User = require('./User');
 
 class Apartment extends Model {}
 
@@ -33,9 +34,10 @@ Apartment.init({
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'users',
+            model: User,
             key: 'user_id'
-        }
+        },
+        onDelete: 'CASCADE'
     }
 }, {
     sequelize,

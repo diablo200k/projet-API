@@ -1,3 +1,4 @@
+const Apartment = require('../models/Apartment'); // Assurez-vous d'importer correctement le modèle Apartment
 const Reservation = require('../models/Reservation');
 exports.getAllApartments = async () => {
     return await Apartment.findAll();
@@ -21,9 +22,17 @@ exports.updateApartment = async (apartmentId, newData) => {
 };
 
 exports.deleteApartment = async (apartmentId) => {
-    const apartment = await Apartment.findByPk(apartmentId);
-    if (!apartment) {
-        throw new Error('Apartment not found');
+    try {
+        // Annuler toutes les réservations associées à cet appartement
+        await Reservation.destroy({ where: { apartment_id: apartmentId } });
+
+        // Une fois les réservations annulées, supprimer l'appartement lui-même
+        await Apartment.destroy({ where: { apartment_id: apartmentId } });
+
+        console.log('Appartement et ses réservations supprimés avec succès');
+        return true;
+    } catch (error) {
+        console.error('Erreur lors de la suppression de l\'appartement:', error);
+        throw new Error('Erreur lors de la suppression de l\'appartement');
     }
-    await apartment.destroy();
 };

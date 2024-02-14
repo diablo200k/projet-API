@@ -60,28 +60,21 @@ exports.updateUser = async (user_id, userData) => {
 };
 exports.deleteUser = async (userId) => {
     try {
-        // Supprimer toutes les réservations de l'utilisateur
-        await Reservation.destroy({
-            where: {
-                client_id: userId
-            }
-        });
+        // Recherche de tous les appartements de l'utilisateur
+        const apartments = await Apartment.findAll({ where: { owner_id: userId } });
 
-        // Supprimer tous les appartements appartenant à l'utilisateur
-        await Apartment.destroy({
-            where: {
-                owner_id: userId
-            }
-        });
+        // Pour chaque appartement, annuler les réservations associées
+        for (const apartment of apartments) {
+            await Reservation.destroy({ where: { apartment_id: apartment.apartment_id } });
+        }
 
-        // Une fois les réservations et les appartements supprimés, vous pouvez supprimer l'utilisateur
-        await User.destroy({
-            where: {
-                user_id: userId
-            }
-        });
+        // Une fois les réservations annulées, supprimer les appartements
+        await Apartment.destroy({ where: { owner_id: userId } });
 
-        console.log('Utilisateur supprimé avec succès');
+        // Enfin, supprimer l'utilisateur lui-même
+        await User.destroy({ where: { user_id: userId } });
+
+        console.log('Utilisateur et ses appartements supprimés avec succès');
         return true;
     } catch (error) {
         console.error('Erreur lors de la suppression de l\'utilisateur:', error);
