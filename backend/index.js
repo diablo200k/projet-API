@@ -2,6 +2,7 @@ const express = require('express');
 const sequelize = require('./bdd/database'); // Assurez-vous que le chemin est correct
 const userRoutes = require('./routes/userRoutes');
 const apartmentRoutes = require('./routes/apartmentRoutes');
+const reservationRoutes = require('./routes/reservationRoutes'); // Importez les routes de réservation
 const app = express();
 
 // Placez app.use(express.json()); ici pour s'assurer que le middleware de parsing JSON est appliqué
@@ -11,6 +12,7 @@ app.use(express.json());
 // Définition des routes utilisateur
 app.use('/api/users', userRoutes);
 app.use('/api/apartments', apartmentRoutes);
+app.use('/api/reservations', reservationRoutes); // Utilisez les routes de réservation
 
 // Exemple de route simple pour tester que le serveur fonctionne
 app.get('/route', async (req, res) => {
@@ -22,7 +24,6 @@ app.get('/route', async (req, res) => {
         res.status(500).json({ error: "Erreur interne du serveur" });
     }
 });
-
 
 app.use((error, req, res, next) => {
     console.error(error);

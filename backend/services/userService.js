@@ -1,7 +1,7 @@
 // Importations nécessaires
 const User = require('../models/User');
 const Apartment = require('../models/Apartment');
-
+const Reservation = require('../models/Reservation');
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 

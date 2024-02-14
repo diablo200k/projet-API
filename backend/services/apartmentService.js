@@ -1,5 +1,4 @@
-const Apartment = require('../models/Apartment');
-
+const Reservation = require('../models/Reservation');
 exports.getAllApartments = async () => {
     return await Apartment.findAll();
 };
