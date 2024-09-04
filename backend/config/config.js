@@ -8,7 +8,7 @@ const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, pr
     host: process.env.DB_HOST,
     dialect: 'mysql', // Changez le dialecte en fonction de votre base de données: 'postgres', 'sqlite', 'mariadb', 'mssql'
     logging: false, // Pour désactiver le logging, mettez cela à false
-    // Ajoutez d'autres options de configuration selon vos besoins
+    
 });
 
 module.exports = sequelize;
